@@ -22,14 +22,24 @@ This project is a simple Node.js script to generate a large number of Solana wal
 
 ## How to Use
 
-1.  Open the `index.js` file.
-2.  Change the `main(10)` value on the last line to the number of wallets you want to generate (e.g., `main(50)`).
-3.  Run the script from your terminal:
+1.  Run the script from your terminal:
     ```bash
     npm start
     ```
 
-The results will be saved in a file named `solana_wallets_timestamp.txt` in the project folder.
+The results will be saved in a file named `solana_wallets_timestamp.txt` in the project folder.  
+## Output
+--- Wallet #1 ---
+Public Address: 2w7i4bd9UJmzYMmnmSMvxnjVvdWVhJLRr3NbjKTeYVtJ
+Private Key (Base64): f7XYzgU9oQbjQ82BAn7o3NKRauIEuS4VqRD4AcWdUiscuKKlerpfzc0s3O+GZQlau3/SMETXu8nt6eKaoWLZdw==
+
+--- Wallet #2 ---
+Public Address: EALn8uZQApDshF25p6kno3ERKLJHTYHFq6CKpJcthLWS
+Private Key (Base64): 0vQB8lT1pf1tp+Gq8DYTkZ2cVAsijkY+4zFi8Q8wBdvDjIVHXZGZW0eX5T8HzdWqO7584OqdeLJhEGXBL2ahZw==
+
+--- Wallet #3 ---
+Public Address: 5xT6r6sDpZzHhtMSmrhNWRZY1EAme65F4rnrxswPfpoD
+Private Key (Base64): +vncjWIxd6CV7j6X3i/O4NwijHikGTXxsDxbi5F/+9pJozRYkstAMv77tqR6rBU0foZlKwa6eq9aA2Kw8ykeJA==
 
 ---
 
