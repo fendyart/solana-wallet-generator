@@ -1,0 +1,21 @@
+{
+  "name": "solana-wallet-generator",
+  "version": "1.0.0",
+  "description": "A simple Node.js script to generate Solana wallets in bulk and save them to a file.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "solana",
+    "wallet",
+    "generator",
+    "web3",
+    "blockchain"
+  ],
+  "author": "Fendyart",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.91.0"
+  }
+}
