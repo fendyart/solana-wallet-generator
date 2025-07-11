@@ -1,13 +1,15 @@
-// File: index.js
-
 const solanaWeb3 = require('@solana/web3.js');
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline'); // Import modul readline
 
-/**
- * Function to generate a new Solana wallet.
- * @returns {object} An object containing the public key and the private key in Base64 format.
- */
+// Buat interface untuk membaca input dari konsol
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+// Fungsi untuk menghasilkan dompet Solana baru
 function generateSolanaWallet() {
   const keypair = solanaWeb3.Keypair.generate();
   return {
@@ -16,11 +18,7 @@ function generateSolanaWallet() {
   };
 }
 
-/**
- * Function to save the generated wallets to a file.
- * @param {Array<object>} wallets - An array of wallet objects.
- * @param {string} fileName - The name of the file to save the wallets to.
- */
+// Fungsi untuk menyimpan dompet ke file
 function saveWalletsToFile(wallets, fileName) {
   const filePath = path.join(__dirname, fileName);
   const stream = fs.createWriteStream(filePath);
@@ -32,29 +30,47 @@ function saveWalletsToFile(wallets, fileName) {
   });
 
   stream.end();
-  console.log(`✅ ${wallets.length} wallets successfully saved to ${fileName}`);
-  console.log('--- WARNING: This file contains private keys. Store it securely! ---');
+
+  stream.on('finish', () => {
+    console.log(`✅ ${wallets.length} wallets successfully saved to ${fileName}`);
+    console.log('--- WARNING: This file contains private keys. Store it securely! ---');
+    rl.close(); // Tutup interface readline setelah selesai
+  });
+
+  stream.on('error', (err) => {
+    console.error('Error writing to file:', err);
+    rl.close(); // Tutup interface readline jika ada error
+  });
 }
 
-/**
- * Main function to run the program.
- * @param {number} count - The number of wallets to generate.
- */
-function main(count) {
-  if (typeof count !== 'number' || count <= 0) {
-    console.error('Please provide a valid number of wallets (a positive number).');
-    return;
-  }
-  
-  const wallets = [];
-  for (let i = 0; i < count; i++) {
-    wallets.push(generateSolanaWallet());
-  }
+// Fungsi utama untuk menjalankan program
+function main() {
+  rl.question('How many wallet to generate: ', (input) => {
+    let count = parseInt(input, 10);
 
-  const fileName = `solana_wallets_${Date.now()}.txt`;
-  saveWalletsToFile(wallets, fileName);
+    // Jika input tidak valid (bukan angka atau negatif), minta lagi
+    if (isNaN(count) || count <= 0) {
+      console.log('Input not valid.');
+      main(); // Panggil main() lagi untuk meminta input ulang
+      return;
+    }
+    
+    console.log(`\nCreating ${count} Solana wallet...\n`);
+
+    const wallets = [];
+    for (let i = 0; i < count; i++) {
+      wallets.push(generateSolanaWallet());
+      // Opsional: tampilkan progress di konsol
+      if ((i + 1) % 100 === 0 || (i + 1) === count) {
+        process.stdout.write(`\rProgress: ${i + 1}/${count} wallets generated...`);
+      }
+    }
+    process.stdout.write('\n'); // Tambahkan baris baru setelah progress selesai
+
+    const fileName = `solana_wallets_${Date.now()}.txt`;
+    saveWalletsToFile(wallets, fileName);
+  });
 }
 
-// Run the main function with 10 wallets as an example.
-// You can change this number as needed.
-main(10);
+// Jalankan fungsi utama
+main();
